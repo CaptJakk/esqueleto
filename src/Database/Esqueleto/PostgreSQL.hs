@@ -10,6 +10,7 @@ module Database.Esqueleto.PostgreSQL
   , arrayAggDistinct
   , arrayAgg
   , arrayAggWith
+  , arrayOf
   , arrayRemove
   , arrayRemoveNull
   , stringAgg
@@ -18,6 +19,8 @@ module Database.Esqueleto.PostgreSQL
   , chr
   , now_
   , random_
+  , (<@.)
+  , (@>.)
   -- * Internal
   , unsafeSqlAggregateFunction
   ) where
@@ -53,6 +56,12 @@ maybeArray x = coalesceDefault [x] (emptyArray)
 data AggMode = AggModeAll -- ^ ALL
              | AggModeDistinct -- ^ DISTINCT
   deriving (Show)
+
+arrayOf :: [SqlExpr (Value a)] -> SqlExpr (Value [a])
+arrayOf ls = ERaw Never $ \info ->
+  let (argsTLB, argsVals) =
+        uncommas' $ map (\(ERaw _ f) -> f info) $ ls
+  in ("Array" <> brackets argsTLB, argsVals)
 
 -- | (Internal) Create a custom aggregate functions with aggregate mode
 --

@@ -54,6 +54,7 @@ module Database.Esqueleto.Internal.Sql
   , makeOrderByNoNewline
   , uncommas'
   , parens
+  , brackets
   , toArgList
   , builderToText
   ) where
@@ -1221,6 +1222,8 @@ makeLocking = flip (,) [] . maybe mempty toTLB . Monoid.getLast
 parens :: TLB.Builder -> TLB.Builder
 parens b = "(" <> (b <> ")")
 
+brackets :: TLB.Builder -> TLB.Builder
+brackets b = "[" <> (b <> "]")
 
 ----------------------------------------------------------------------
 
