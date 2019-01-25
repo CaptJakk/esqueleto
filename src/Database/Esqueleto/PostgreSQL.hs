@@ -152,3 +152,9 @@ chr = unsafeSqlFunction "chr"
 
 now_ :: SqlExpr (Value UTCTime)
 now_ = unsafeSqlValue "NOW()"
+
+(<@.) :: SqlExpr (Value [a]) -> SqlExpr (Value [a]) -> SqlExpr (Value Bool)
+(<@.) = unsafeSqlBinOp " <@ "
+
+(@>.) :: SqlExpr (Value [a]) -> SqlExpr (Value [a]) -> SqlExpr (Value Bool)
+(@>.) = unsafeSqlBinOp " @> "
